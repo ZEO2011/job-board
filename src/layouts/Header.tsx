@@ -132,11 +132,11 @@ export default function Header() {
 												</button>
 												{profileStatus && (
 													<Dialog className="left-[40%] w-32">
-														<button className="main-btn text-start pl-2 py-2 whitespace-nowrap">
+														<button className="main-btn text-start pl-2 py-2">
 															my
 															listing
 														</button>
-														<button className="main-btn text-start pl-2 py-2 whitespace-nowrap">
+														<button className="main-btn text-start pl-2 py-2">
 															logout
 														</button>
 													</Dialog>
@@ -170,10 +170,10 @@ export default function Header() {
 							</button>
 							{profileStatus && (
 								<Dialog className="left-1/2 -translate-x-1/2">
-									<button className="main-btn text-start pl-2 py-2 pr-8 whitespace-nowrap">
+									<button className="main-btn text-start pl-2 py-2 pr-8">
 										my listing
 									</button>
-									<button className="main-btn text-start pl-2 py-2 pr-8 whitespace-nowrap">
+									<button className="main-btn text-start pl-2 py-2 pr-8">
 										logout
 									</button>
 								</Dialog>

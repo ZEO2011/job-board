@@ -19,7 +19,7 @@
     @apply w-full h-full;
   }
   .main-btn {
-    @apply p-2  px-4 rounded-lg cursor-pointer transition hover:bg-gray-100 dark:hover:bg-slate-700;
+    @apply p-2  px-4 rounded-lg cursor-pointer transition hover:bg-gray-100 dark:hover:bg-slate-700 whitespace-nowrap;
   }
   .user {
     @apply normal-case;
