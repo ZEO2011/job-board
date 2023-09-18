@@ -160,7 +160,7 @@ export default function Header() {
 							onClick={profile}
 						>
 							<button className="flex gap-2 items-center justify-between py-1">
-								hatemziad384@gmail.com
+								test@gmail.com
 								<FontAwesomeIcon
 									icon={faChevronDown}
 									className={`text-sm transition ${
