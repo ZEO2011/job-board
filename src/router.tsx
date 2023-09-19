@@ -3,6 +3,7 @@ import RootLayout from "./layouts/RootLayout"
 import Jobs from "./pages/jobs/Jobs"
 import Tasks from "./pages/tasks/Tasks"
 import ErrorPage from "./pages/ErrorPage"
+import Login from "./pages/Login"
 
 export const router: RouteObject[] = [
 	{
@@ -23,6 +24,10 @@ export const router: RouteObject[] = [
 					{
 						path: "/tasks",
 						element: <Tasks />,
+					},
+					{
+						path: "/login",
+						element: <Login />,
 					},
 				],
 			},

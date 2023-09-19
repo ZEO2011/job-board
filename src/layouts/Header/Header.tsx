@@ -1,37 +1,35 @@
 import { faMoon, faSun } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useEffect, useRef, useState } from "react"
-import Dialog from "../components/Dialog"
+import { useRef } from "react"
+import Dialog from "../../components/Dialog"
 import { Link } from "react-router-dom"
-import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons"
+import { faBars } from "@fortawesome/free-solid-svg-icons"
+import { useBoolean, useDarkMode } from "usehooks-ts"
+import LoginBtn from "./components/LoginBtn"
+import MobileLoginBtn from "./components/MobileLoginBtn"
 
+const DEFAULT_THEME = "(prefers-color-scheme: dark)"
 export default function Header() {
-	const defaultTheme = window.matchMedia("(prefers-color-scheme)").matches
-	const [themeStatus, setThemeStatus] = useState(false)
-	const [dark, setDark] = useState(defaultTheme)
-	const [profileStatus, setProfileStatus] = useState(false)
-	const [phoneNavlinksStatus, setPhoneNavlinksStatus] = useState(false)
+	const { value: themeStatus, setValue: setThemeStatus } = useBoolean(false)
+	const {
+		isDarkMode: dark,
+		enable: enableDarkMode,
+		disable: disableDarkMode,
+	} = useDarkMode()
+	const { value: profileStatus, setValue: setProfileStatus } =
+		useBoolean(false)
+	const { value: phoneNavlinksStatus, setValue: setPhoneNavlinksStatus } =
+		useBoolean(false)
 	const phoneNavlinksRef = useRef<HTMLLIElement>(null)
 	const html = document.querySelector("html")
 	html?.classList.add(dark ? "dark" : "light")
 	html?.classList.remove(!dark ? "dark" : "light")
-	useEffect(() => {
-		const local = localStorage.getItem("dark")
-		if (local !== null) {
-			const bol: boolean = eval(local)
-			setDark(bol)
-		}
-	}, [])
 	function themeToggle() {
 		if (profileStatus || phoneNavlinksStatus) {
 			setProfileStatus(false)
 			setPhoneNavlinksStatus(false)
 		}
 		setThemeStatus((c) => !c)
-	}
-	function changeTheme(theme: boolean) {
-		setDark(theme)
-		localStorage.setItem("dark", `${theme}`)
 	}
 	function profile() {
 		if (themeStatus) {
@@ -53,7 +51,7 @@ export default function Header() {
 	}
 	return (
 		<>
-			<header className="border-b-2 dark:border-0 shadow-lg h-20 w-full flex justify-between items-center px-14 dark:bg-slate-800 dark:text-white">
+			<header className="border-b-2 dark:border-0 shadow-lg h-20 w-full flex justify-between items-center px-8 md:px-14 dark:bg-slate-800 dark:text-white">
 				<h1 className="logo">job Board</h1>
 				<nav className="w-fit h-full flex">
 					<ul className="flex gap-2 text-lg h-full w-fit items-center justify-center">
@@ -66,29 +64,25 @@ export default function Header() {
 									icon={dark ? faMoon : faSun}
 								/>
 								{themeStatus && (
-									<Dialog>
+									<Dialog className="-left-20">
 										<button
-											className="w-full main-btn text-start pl-2 pr-8 rounded-md"
-											onClick={() =>
-												changeTheme(false)
-											}
+											className="w-full main-btn text-start pl-2 pr-14 rounded-md"
+											onClick={disableDarkMode}
 										>
 											light
 										</button>
 										<button
-											className="w-full main-btn text-start pl-2 pr-8 rounded-md"
-											onClick={() =>
-												changeTheme(true)
-											}
+											className="w-full main-btn text-start pl-2 pr-14 rounded-md"
+											onClick={enableDarkMode}
 										>
 											dark
 										</button>
 										<button
-											className="w-full main-btn text-start pl-2 pr-8 rounded-md"
-											onClick={() =>
-												changeTheme(
-													defaultTheme,
-												)
+											className="w-full main-btn text-start pl-2 pr-14 rounded-md"
+											onClick={
+												DEFAULT_THEME
+													? enableDarkMode
+													: disableDarkMode
 											}
 										>
 											system
@@ -105,7 +99,7 @@ export default function Header() {
 							<button>
 								<FontAwesomeIcon icon={faBars} />
 								{phoneNavlinksStatus && (
-									<ul className="flex text-sm relative right-36 top-0  h-full w-fit items-end justify-center flex-col">
+									<ul className="flex text-sm relative right-12 -top-7  h-full w-fit items-end justify-center flex-col">
 										<Dialog className="w-fit h-fit">
 											<li
 												className=" h-fit main-btn w-full text-start"
@@ -141,39 +135,11 @@ export default function Header() {
 													)
 												}}
 											>
-												<button className="flex gap-2 items-center justify-between py-1">
-													hatemziad384@gmail.com
-													<FontAwesomeIcon
-														icon={
-															faChevronDown
-														}
-														className={`text-sm transition ${
-															profileStatus &&
-															"rotate-180"
-														}`}
-													/>
-												</button>
-												{profileStatus && (
-													<Dialog className="left-0 w-32">
-														<button
-															className="main-btn text-start pl-2 py-2"
-															onClick={() => {
-																hidePhoneNavlinks()
-															}}
-														>
-															my
-															listing
-														</button>
-														<button
-															className="main-btn text-start pl-2 py-2"
-															onClick={() => {
-																hidePhoneNavlinks()
-															}}
-														>
-															logout
-														</button>
-													</Dialog>
-												)}
+												<MobileLoginBtn
+													profileStatus={
+														profileStatus
+													}
+												/>
 											</li>
 										</Dialog>
 									</ul>
@@ -196,25 +162,7 @@ export default function Header() {
 							className="w-fit h-fit main-btn user relative"
 							onClick={profile}
 						>
-							<button className="flex gap-2 items-center justify-between py-1">
-								test@gmail.com
-								<FontAwesomeIcon
-									icon={faChevronDown}
-									className={`text-sm transition ${
-										profileStatus && "rotate-180"
-									}`}
-								/>
-							</button>
-							{profileStatus && (
-								<Dialog className="left-1/2 -translate-x-1/2">
-									<button className="main-btn text-start pl-2 py-2 pr-8">
-										my listing
-									</button>
-									<button className="main-btn text-start pl-2 py-2 pr-8">
-										logout
-									</button>
-								</Dialog>
-							)}
+							<LoginBtn profileStatus={profileStatus} />
 						</li>
 					</ul>
 				</nav>
