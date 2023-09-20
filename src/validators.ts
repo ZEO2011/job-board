@@ -7,7 +7,7 @@ export function checkEmail(email: string) {
 			"the email should be more than 4 chars (fourchars@mail.com)",
 		)
 
-	if (email.split("@")[0].length < 1)
+	if (email.split("@")[1].length < 2)
 		errors.push("the email should contain (.com, .net, etc) ")
 
 	return errors
@@ -15,7 +15,7 @@ export function checkEmail(email: string) {
 
 export function checkPassword(password: string) {
 	const errors = []
-	if (password.length <= 8) errors.push("must be more that 7 chars")
+	if (password.length <= 8) errors.push("must be more than 7 chars")
 	if (!isNaN(parseInt(password))) errors.push("must contain a number")
 	return errors
 }
