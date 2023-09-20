@@ -4,6 +4,7 @@ import Jobs from "./pages/jobs/Jobs"
 import Tasks from "./pages/tasks/Tasks"
 import ErrorPage from "./pages/ErrorPage"
 import Login from "./pages/Login"
+import MyListings from "./pages/MyListings"
 
 export const router: RouteObject[] = [
 	{
@@ -19,7 +20,13 @@ export const router: RouteObject[] = [
 					},
 					{
 						path: "/jobs",
-						element: <Jobs />,
+						children: [
+							{ index: true, element: <Jobs /> },
+							{
+								path: "my-listings",
+								element: <MyListings />,
+							},
+						],
 					},
 					{
 						path: "/tasks",

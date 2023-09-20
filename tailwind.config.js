@@ -3,7 +3,11 @@ export default {
 	darkMode: "class",
 	content: ["./src/**/*.{ts,tsx}"],
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				error: "#FF0000",
+			},
+		},
 	},
 	plugins: [],
 }

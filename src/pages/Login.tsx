@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import useLogin from "../contexts/useLoginData"
+import { checkConfirmPassword, checkEmail, checkPassword } from "../validators"
 
 export default function Login() {
 	const navigate = useNavigate()
@@ -9,26 +10,33 @@ export default function Login() {
 	const [passwordValue, setPasswordValue] = useState("")
 	const [confirmPasswordValue, setConfirmPasswordValue] = useState("")
 	const [confirmPasswordStatus, setConfirmPasswordStatus] = useState(false)
+	const [firstSubmit, setFirstSubmit] = useState(true)
+	const emailErrors = !firstSubmit ? checkEmail(emailValue) : null
+	const passwordErrors = !firstSubmit ? checkPassword(passwordValue) : null
+	const confirmErrors = !firstSubmit
+		? checkConfirmPassword(passwordValue, confirmPasswordValue)
+		: null
+	const errors =
+		emailErrors &&
+		passwordErrors &&
+		emailErrors?.length + passwordErrors?.length
+	const signUpErrors =
+		emailErrors &&
+		passwordErrors &&
+		confirmErrors &&
+		emailErrors?.length + passwordErrors?.length + confirmErrors.length
 	function submit(confirm: boolean = false) {
-		if (confirm === confirmPasswordStatus) {
-			if (confirmPasswordStatus === true) {
-				if (passwordValue !== confirmPasswordValue) {
-					return alert(
-						"password doesn't the same as the confirm password input",
-					)
-				}
-			}
-			const emailRegex = /[a-zA-Z1-9]{1,}@[a-zA-Z]{1,}/gi
-			if (!emailRegex.test(emailValue)) {
-				return alert("the email must end with @(gmail, etc.)")
-			}
-		}
+		setFirstSubmit(false)
+		if (confirm != confirmPasswordStatus) setFirstSubmit(true)
 		setConfirmPasswordStatus(confirm)
-		login?.setLoginData({
-			email: emailValue,
-			password: passwordValue,
-		})
-		return navigate("/jobs")
+		if (!firstSubmit)
+			if (errors == 0) {
+				login?.setLoginData({
+					email: emailValue,
+					password: passwordValue,
+				})
+				return navigate("/jobs")
+			}
 	}
 	return (
 		<div className="w-full h-[calc(100%-5rem)] grid place-items-center">
@@ -56,8 +64,17 @@ export default function Login() {
 							required
 							id="email"
 							type="email"
-							className="border-2 dark:border-0 dark:text-white w-full h-10 rounded-md mt-2 pl-2 dark:bg-slate-700"
+							className={`border-2 mb-2 bg-main ${
+								emailErrors
+									? emailErrors?.length > 0
+										? "border-error dark:border-error"
+										: "dark:border-slate-700"
+									: "dark:border-slate-700"
+							} dark:border-2 dark:text-white w-full h-10 rounded-md mt-2 pl-2 dark:bg-slate-700`}
 						/>
+						<p className="text-red-600">
+							{emailErrors?.join(", ")}
+						</p>
 					</div>
 					<div className="password">
 						<label
@@ -74,8 +91,17 @@ export default function Login() {
 							required
 							id="password"
 							type="password"
-							className="border-2 dark:border-0 dark:text-white w-full h-10 rounded-md mt-2 pl-2 dark:bg-slate-700"
+							className={`border-2 mb-2 bg-main ${
+								passwordErrors
+									? passwordErrors?.length > 0
+										? "border-error dark:border-error"
+										: "dark:border-slate-700"
+									: "dark:border-slate-700"
+							} dark:border-2 dark:text-white w-full h-10 rounded-md mt-2 pl-2 dark:bg-slate-700`}
 						/>
+						<p className="text-red-600">
+							{passwordErrors?.join(", ")}
+						</p>
 					</div>
 					{confirmPasswordStatus && (
 						<div className="confirm-password">
@@ -95,8 +121,17 @@ export default function Login() {
 								required
 								id="confirm-password"
 								type="text"
-								className="border-2 dark:border-0 dark:text-white w-full h-10 rounded-md mt-2 pl-2 dark:bg-slate-700"
+								className={`border-2 mb-2 bg-main ${
+									confirmErrors
+										? confirmErrors?.length > 0
+											? "border-error dark:border-error"
+											: "dark:border-slate-700"
+										: "dark:border-slate-700"
+								} dark:border-2 dark:text-white w-full h-10 rounded-md mt-2 pl-2 dark:bg-slate-700`}
 							/>
+							<p className="text-red-600">
+								{confirmErrors?.join(", ")}
+							</p>
 						</div>
 					)}
 				</div>
@@ -112,6 +147,13 @@ export default function Login() {
 					<button
 						className="main-btn dark:border-slate-700 border-2 dark:text-white"
 						onClick={() => submit(true)}
+						disabled={
+							confirmPasswordStatus
+								? signUpErrors
+									? signUpErrors > 0
+									: false
+								: false
+						}
 					>
 						sign up
 					</button>
@@ -119,15 +161,17 @@ export default function Login() {
 						onClick={() => submit(false)}
 						className={`main-btn  dark:text-black text-white py-3 px-5 ${
 							!confirmPasswordStatus &&
-							(emailValue.length === 0 ||
-								passwordValue.length === 0)
+							errors &&
+							errors > 0
 								? "bg-gray-500 dark:bg-gray-500 hover:bg-gray-500 dark:text-white"
 								: "hover:bg-black bg-black dark:hover:bg-white dark:bg-white"
 						}`}
 						disabled={
-							!confirmPasswordStatus &&
-							(emailValue.length === 0 ||
-								passwordValue.length === 0)
+							!confirmPasswordStatus
+								? errors
+									? errors > 0
+									: false
+								: false
 						}
 					>
 						log in
