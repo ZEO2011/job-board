@@ -26,11 +26,12 @@ function Jobs() {
 	return (
 		<>
 			<Caption
+				className="md:p-0 pl-0"
 				caption="job listings"
 				buttonCaption="create listing"
 				to="/jobs/new"
 			/>
-			<div className="flex flex-wrap justify-center items-center w-full h-fit gap-4 md:py-2 mt-8 px-2 pb-12 md:px-4">
+			<div className="flex flex-wrap justify-center items-center w-full h-fit gap-4 md:py-2 mt-8 px-4 pb-12">
 				<FilterInput caption="title" inputType="text" />
 				<FilterInput
 					className="relative"

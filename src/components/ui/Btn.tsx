@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 type BtnType<T extends ElementType> = {
 	children: ReactNode
 	As?: T
-	style?: "border" | "background"
+	style?: "border" | "background" | "none"
 	to?: string // Add 'to' prop for routing
 } & ComponentPropsWithoutRef<T>
 
@@ -18,10 +18,12 @@ export default function Btn<T extends ElementType = "button">({
 }: BtnType<T>) {
 	const Component = As || "button" // Use 'As' or default to "button"
 	const buttonClassNames = classNames(
-		`text-lg py-2 px-4 rounded-lg text-white transition hover:scale-[1.04] ${
+		`text-lg py-2 px-4 rounded-lg transition hover:scale-[1.04] ${
 			style === "background"
-				? "bg-black dark:bg-white dark:text-black"
-				: "text-black border-2 dark:border-slate-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
+				? "bg-black dark:bg-white dark:text-black text-white"
+				: style === "none"
+				? "dark:text-white text-black"
+				: "text-black border-2 dark:border-slate-700 text-white dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
 		}`,
 		restProps.className,
 	)

@@ -5,15 +5,26 @@ export function checkEmail(email: string) {
 		errors.push(
 			"the email should be more than 4 chars (fourchars@mail.com)",
 		)
-	if (email.split("@")[0].length < 2)
-		errors.push("the email should contain (.com, .net, etc) ")
+	try {
+		if (email.split("@")[1].length < 4)
+			errors.push("the email should contain (outlook, gmail, etc.) ")
+	} catch {
+		errors.push("the email should contain (outlook, gmail, etc.) ")
+	}
+	try {
+		if (email.split("@")[1].split(".")[1].length < 2)
+			errors.push("the email should contain (com, co, etc.) ")
+	} catch {
+		errors.push("the email should contain (com, co, etc.) ")
+	}
 	return errors
 }
 
 export function checkPassword(password: string) {
 	const errors = []
 	if (password.length <= 8) errors.push("must be more than 7 chars")
-	if (!isNaN(parseInt(password))) errors.push("must contain a number")
+	if (password.split("").filter((el) => !isNaN(parseInt(el))).length === 0)
+		errors.push("must contain a number")
 	return errors
 }
 

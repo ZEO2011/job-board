@@ -1,7 +1,8 @@
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import useLogin from "../contexts/useLoginData"
 import { checkConfirmPassword, checkEmail, checkPassword } from "../validators"
+import Btn from "../components/ui/Btn"
 
 export default function Login() {
 	const navigate = useNavigate()
@@ -11,20 +12,14 @@ export default function Login() {
 	const [confirmPasswordValue, setConfirmPasswordValue] = useState("")
 	const [confirmPasswordStatus, setConfirmPasswordStatus] = useState(false)
 	const [firstSubmit, setFirstSubmit] = useState(true)
-	const emailErrors = !firstSubmit ? checkEmail(emailValue) : null
-	const passwordErrors = !firstSubmit ? checkPassword(passwordValue) : null
+	const emailErrors = !firstSubmit ? checkEmail(emailValue) : []
+	const passwordErrors = !firstSubmit ? checkPassword(passwordValue) : []
 	const confirmErrors = !firstSubmit
 		? checkConfirmPassword(passwordValue, confirmPasswordValue)
-		: null
-	const errors =
-		emailErrors &&
-		passwordErrors &&
-		emailErrors?.length + passwordErrors?.length
+		: []
+	const errors = emailErrors.length + passwordErrors.length
 	const signUpErrors =
-		emailErrors &&
-		passwordErrors &&
-		confirmErrors &&
-		emailErrors?.length + passwordErrors?.length + confirmErrors.length
+		emailErrors.length + passwordErrors.length + confirmErrors.length
 	function submit(confirm: boolean = false) {
 		setFirstSubmit(false)
 		if (confirm != confirmPasswordStatus) setFirstSubmit(true)
@@ -39,8 +34,8 @@ export default function Login() {
 			}
 	}
 	return (
-		<div className="w-full h-[calc(100%-5rem)] grid place-items-center">
-			<div className="w-96 h-fit rounded-lg shadow-lg p-6 dark:bg-slate-800">
+		<div className="w-full h-[calc(100%-5rem)] px-4 grid place-items-center relative">
+			<div className="w-[min(28rem,100%)] min-h-[23rem] rounded-lg shadow-lg p-6 dark:bg-slate-800 relative">
 				<h2 className="dark:text-white text-2xl font-bold mb-1">
 					log in
 				</h2>
@@ -52,7 +47,11 @@ export default function Login() {
 					<div className="email">
 						<label
 							htmlFor="email"
-							className="font-semibold dark:text-white"
+							className={`font-semibold ${
+								!firstSubmit && emailErrors.length !== 0
+									? "text-red-600"
+									: "dark:text-white"
+							}`}
 						>
 							email
 						</label>
@@ -66,20 +65,25 @@ export default function Login() {
 							type="email"
 							className={`border-2 mb-2 bg-main ${
 								emailErrors
-									? emailErrors?.length > 0
+									? emailErrors.length > 0
 										? "border-error dark:border-error"
 										: "dark:border-slate-700"
 									: "dark:border-slate-700"
 							} dark:border-2 dark:text-white w-full h-10 rounded-md mt-2 pl-2 dark:bg-slate-700`}
 						/>
 						<p className="text-red-600">
-							{emailErrors?.join(", ")}
+							{emailErrors.join(", ")}
 						</p>
 					</div>
 					<div className="password">
 						<label
 							htmlFor="password"
-							className="font-semibold dark:text-white"
+							className={`font-semibold ${
+								!firstSubmit &&
+								passwordErrors.length !== 0
+									? "text-red-600"
+									: "dark:text-white"
+							}`}
 						>
 							password
 						</label>
@@ -93,21 +97,26 @@ export default function Login() {
 							type="password"
 							className={`border-2 mb-2 bg-main ${
 								passwordErrors
-									? passwordErrors?.length > 0
+									? passwordErrors.length > 0
 										? "border-error dark:border-error"
 										: "dark:border-slate-700"
 									: "dark:border-slate-700"
 							} dark:border-2 dark:text-white w-full h-10 rounded-md mt-2 pl-2 dark:bg-slate-700`}
 						/>
 						<p className="text-red-600">
-							{passwordErrors?.join(", ")}
+							{passwordErrors.join(", ")}
 						</p>
 					</div>
 					{confirmPasswordStatus && (
 						<div className="confirm-password">
 							<label
 								htmlFor="confirm-password"
-								className="font-semibold dark:text-white"
+								className={`font-semibold ${
+									!firstSubmit &&
+									confirmErrors.length !== 0
+										? "text-red-600"
+										: "dark:text-white"
+								}`}
 							>
 								confirm password
 							</label>
@@ -123,29 +132,24 @@ export default function Login() {
 								type="text"
 								className={`border-2 mb-2 bg-main ${
 									confirmErrors
-										? confirmErrors?.length > 0
+										? confirmErrors.length > 0
 											? "border-error dark:border-error"
 											: "dark:border-slate-700"
 										: "dark:border-slate-700"
 								} dark:border-2 dark:text-white w-full h-10 rounded-md mt-2 pl-2 dark:bg-slate-700`}
 							/>
 							<p className="text-red-600">
-								{confirmErrors?.join(", ")}
+								{confirmErrors.join(", ")}
 							</p>
 						</div>
 					)}
 				</div>
-				<div className="buttons flex justify-end gap-2">
-					<button className="main-btn grid place-items-center dark:text-white">
-						<Link
-							className="w-full h-full grid place-items-center"
-							to={".."}
-						>
-							cancel
-						</Link>
-					</button>
-					<button
-						className="main-btn dark:border-slate-700 border-2 dark:text-white"
+				<div className="buttons flex justify-end gap-2 absolute bottom-4 right-4">
+					<Btn style={"none"} to="..">
+						cancel
+					</Btn>
+					<Btn
+						style={"border"}
 						onClick={() => submit(true)}
 						disabled={
 							confirmPasswordStatus
@@ -156,16 +160,10 @@ export default function Login() {
 						}
 					>
 						sign up
-					</button>
-					<button
+					</Btn>
+					<Btn
+						className="px-5"
 						onClick={() => submit(false)}
-						className={`main-btn  dark:text-black text-white py-3 px-5 ${
-							!confirmPasswordStatus &&
-							errors &&
-							errors > 0
-								? "bg-gray-500 dark:bg-gray-500 hover:bg-gray-500 dark:text-white"
-								: "hover:bg-black bg-black dark:hover:bg-white dark:bg-white"
-						}`}
 						disabled={
 							!confirmPasswordStatus
 								? errors
@@ -174,8 +172,8 @@ export default function Login() {
 								: false
 						}
 					>
-						log in
-					</button>
+						login
+					</Btn>
 				</div>
 			</div>
 		</div>
