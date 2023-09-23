@@ -34,7 +34,7 @@ export default function Login() {
 			}
 	}
 	return (
-		<div className="w-full h-[calc(100%-5rem)] px-4 grid place-items-center relative">
+		<div className="w-full h-[calc(100%-5rem)] px-4 grid place-items-center">
 			<div className="w-[min(28rem,100%)] min-h-[23rem] rounded-lg shadow-lg p-6 dark:bg-slate-800 relative">
 				<h2 className="dark:text-white text-2xl font-bold mb-1">
 					log in
@@ -144,7 +144,7 @@ export default function Login() {
 						</div>
 					)}
 				</div>
-				<div className="buttons flex justify-end gap-2 absolute bottom-4 right-4">
+				<div className="buttons flex justify-end gap-2">
 					<Btn style={"none"} to="..">
 						cancel
 					</Btn>
