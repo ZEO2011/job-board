@@ -34,7 +34,7 @@ export function FilterInput<T extends ElementType = "button">({
 	inputRef,
 	inputClassName,
 	as: Element = "input", // Default to 'input' element if 'as' prop is not provided
-	max = 1000,
+	max = Number.MAX_SAFE_INTEGER,
 	...restProps
 }: FilterInputType<T>) {
 	const parentClassName = classNames(

@@ -147,7 +147,7 @@ export default function NewJobListing() {
 					setInputValue={setFullDescription}
 					as={"textarea"}
 					className="w-full col-span-full h-[10rem]"
-					inputClassName="h-full pt-3 user h-full"
+					inputClassName="!h-full pt-3 user"
 					caption="full description"
 					inputType="text"
 				/>
