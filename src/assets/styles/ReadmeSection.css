@@ -1,0 +1,20 @@
+/* ReadmeSection.css */
+.readme-section {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+/* Style headings, paragraphs, lists, etc. */
+.readme-section h1 {
+	font-size: 24px;
+	margin-bottom: 16px;
+}
+
+.readme-section h2 {
+	font-size: 20px;
+	margin-top: 24px;
+	margin-bottom: 12px;
+}
+
+/* Add more styling as needed */

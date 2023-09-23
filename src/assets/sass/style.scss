@@ -20,6 +20,9 @@
 	#root {
 		@apply w-full h-full;
 	}
+	#alert-messages:has(*) {
+		@apply bg-white bg-opacity-80 dark:bg-opacity-40 dark:text-white dark:bg-slate-700 inset-0 grid place-items-center z-50 fixed;
+	}
 	.main-btn {
 		@apply p-2  px-4 rounded-lg cursor-pointer transition hover:bg-gray-100 dark:hover:bg-slate-700 whitespace-nowrap;
 	}

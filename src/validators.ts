@@ -1,15 +1,12 @@
 export function checkEmail(email: string) {
 	const errors = []
 	if (!email.includes("@")) errors.push("must include @")
-
 	if (email.split("@")[0].length <= 4)
 		errors.push(
 			"the email should be more than 4 chars (fourchars@mail.com)",
 		)
-
-	if (email.split("@")[1].length < 2)
+	if (email.split("@")[0].length < 2)
 		errors.push("the email should contain (.com, .net, etc) ")
-
 	return errors
 }
 

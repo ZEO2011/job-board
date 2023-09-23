@@ -20,7 +20,7 @@ export default function Header() {
 		<>
 			<header className="border-b-2 dark:border-0 shadow-lg h-20 w-full flex justify-between items-center px-8 md:px-14 dark:bg-slate-800 dark:text-white">
 				<h1 className="logo">job Board</h1>
-				<nav className="w-fit h-full flex">
+				<nav className="w-fit h-full flex gap-2">
 					<ul className="flex gap-2 text-lg h-full w-fit items-center justify-center">
 						<Menu>
 							<li className="w-fit h-fit main-btn relative p-0">
@@ -107,13 +107,19 @@ export default function Header() {
 						</Menu>
 					</ul>
 					<ul className="gap-2 text-lg h-full w-fit items-center justify-center md:flex hidden">
-						<li className="w-fit h-fit main-btn">
-							<Link className="w-full h-full" to="/tasks">
+						<li className="w-fit h-fit">
+							<Link
+								className="main-btn w-full h-full"
+								to="/tasks"
+							>
 								tasks board
 							</Link>
 						</li>
-						<li className="w-fit h-fit main-btn">
-							<Link className="w-full h-full" to="/jobs">
+						<li className="w-fit h-fit">
+							<Link
+								className="main-btn w-full h-full"
+								to="/jobs"
+							>
 								job listings
 							</Link>
 						</li>
