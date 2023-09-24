@@ -5,14 +5,16 @@ import { jobListings } from "../../../utils/types"
 type JobListingsType = {
 	jobListings: jobListings[]
 	setJobListings: Dispatch<SetStateAction<jobListings[]>>
-	hidden: boolean
-	favorites: boolean
+	hidden?: boolean
+	favorites?: boolean
+	setDate?: boolean
 }
 export default function JobListings({
 	jobListings,
 	setJobListings,
 	hidden,
 	favorites,
+	setDate,
 }: JobListingsType) {
 	const filtered = jobListings
 		.filter((el) => {
@@ -37,6 +39,7 @@ export default function JobListings({
 		.map((job: jobListings) => {
 			return (
 				<JobListing
+					setDate={setDate}
 					setJobListings={setJobListings}
 					key={job.id}
 					{...job}

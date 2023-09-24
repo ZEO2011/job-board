@@ -35,3 +35,52 @@ export function checkConfirmPassword(pass1: string, pass2: string) {
 	}
 	return errors
 }
+
+export function checkLength(
+	text: string,
+	title?: string,
+	greaterThan?: number,
+	lowerThan?: number,
+) {
+	const errors = []
+	if (lowerThan)
+		if (text.length > lowerThan)
+			errors.push(`the ${title} must be lower than ${lowerThan} chars`)
+	if (greaterThan)
+		if (text.length < greaterThan)
+			errors.push(
+				`the ${title} must be greater than ${greaterThan} chars`,
+			)
+	return errors
+}
+
+export function checkURL(url: string) {
+	const errors = []
+	const httpRegex = /(http:\/\/|https:\/\/)/gi
+	if (!httpRegex.test(url))
+		errors.push("the URL should contain https:// or http://")
+	const URLNameRegex = /(?:https?:\/\/|www\.)\S+/gi
+	if (!URLNameRegex.test(url)) {
+		errors.push("the URL should contain a domain name")
+	}
+	const extensionNameRegex = /[.][a-zA-Z0-9]{1,10}/gi
+	if (!extensionNameRegex.test(url))
+		errors.push("the URL should contain a extension name")
+	return errors
+}
+
+export function checkNumber(
+	num: string,
+	text: string,
+	greaterThan?: number,
+	lowerThan?: number,
+) {
+	const errors = []
+	if (greaterThan)
+		if (+num <= greaterThan)
+			errors.push(`the ${text} should be greater than ${greaterThan}$`)
+	if (lowerThan)
+		if (+num >= lowerThan)
+			errors.push(`the ${text} should be greater than ${lowerThan}`)
+	return errors
+}

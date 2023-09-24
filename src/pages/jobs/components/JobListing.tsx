@@ -8,11 +8,12 @@ import { faHeart as favoriteHeart } from "@fortawesome/free-solid-svg-icons"
 import { faGraduationCap, faMoneyBill } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { jobListings } from "../../../utils/types"
-import { Dispatch, SetStateAction } from "react"
-import Btn from "../../../components/ui/Btn"
+import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react"
 import { useToggle } from "usehooks-ts"
 import JobListingView from "./JobListingView"
 import classNames from "classnames"
+import { format } from "date-fns"
+import Btn from "../../../components/ui/Btn"
 
 export default function JobListing({
 	setJobListings,
@@ -29,9 +30,14 @@ export default function JobListing({
 	id,
 	website,
 	className,
+	date,
+	setDate,
+	children,
 }: Omit<jobListings, "user"> &
 	Partial<{ setJobListings: Dispatch<SetStateAction<jobListings[]>> }> & {
 		className?: string
+		setDate?: boolean
+		children?: ReactNode
 	}) {
 	const [showMessage, toggleMessage, setToggleMessage] = useToggle(false)
 	const parentClassNames = classNames(
@@ -71,6 +77,15 @@ export default function JobListing({
 	const formattedSalary = currencyFormatter
 		.format(salary)
 		.replace(/\.00$/, "")
+	const jobListingDate = format(Date.parse(date), "dd")
+	const daysGone = +jobListingDate - +format(new Date(), "dd")
+	const [formattedDate, setFormattedDate] = useState<string | number>(
+		daysGone,
+	)
+	useEffect(() => {
+		if (daysGone == 0) setFormattedDate("today")
+		if (daysGone == 1) setFormattedDate("yesterday")
+	}, [daysGone])
 	return (
 		<>
 			{showMessage && (
@@ -90,28 +105,46 @@ export default function JobListing({
 				<div className="header w-full h-fit flex justify-between items-center">
 					<h3 className="text-3xl font-bold">{title}</h3>
 					<div className="flex gap-1">
-						<div
-							className="w-12 h-12 grid place-items-center cursor-pointer transition hover:bg-gray-200 dark:hover:bg-slate-800 rounded-full"
-							onClick={hiddenHandler}
-						>
-							<FontAwesomeIcon
-								icon={hidden ? faEyeSlash : faEye}
-								className="text-xl"
-							/>
-						</div>
-						<div
-							className="w-12 h-12 grid place-items-center cursor-pointer transition hover:bg-gray-200 dark:hover:bg-slate-800 rounded-full"
-							onClick={favoriteHandler}
-						>
-							<FontAwesomeIcon
-								icon={
-									favorite ? favoriteHeart : faHeart
-								}
-								className={`${
-									favorite && "text-red-600"
-								} text-xl`}
-							/>
-						</div>
+						{!setDate && (
+							<>
+								<div
+									className="w-12 h-12 grid place-items-center cursor-pointer transition hover:bg-gray-200 dark:hover:bg-slate-800 rounded-full"
+									onClick={hiddenHandler}
+								>
+									<FontAwesomeIcon
+										icon={
+											hidden
+												? faEyeSlash
+												: faEye
+										}
+										className="text-xl"
+									/>
+								</div>
+								<div
+									className="w-12 h-12 grid place-items-center cursor-pointer transition hover:bg-gray-200 dark:hover:bg-slate-800 rounded-full"
+									onClick={favoriteHandler}
+								>
+									<FontAwesomeIcon
+										icon={
+											favorite
+												? favoriteHeart
+												: faHeart
+										}
+										className={`${
+											favorite &&
+											"text-red-600"
+										} text-xl`}
+									/>
+								</div>
+							</>
+						)}
+						{setDate && (
+							<>
+								<Btn className="text-sm">
+									active - {formattedDate}
+								</Btn>
+							</>
+						)}
 					</div>
 				</div>
 				<div className="flex flex-col gap-1">
@@ -137,12 +170,14 @@ export default function JobListing({
 					</div>
 				</div>
 				<p className="p-4 pl-0 text-lg">{description}</p>
-				<Btn
-					className="absolute bottom-3 right-5"
-					onClick={toggleMessage}
-				>
-					view more
-				</Btn>
+				{children ?? (
+					<Btn
+						className="absolute bottom-3 right-5"
+						onClick={toggleMessage}
+					>
+						view more
+					</Btn>
+				)}
 			</div>
 		</>
 	)

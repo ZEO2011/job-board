@@ -18,7 +18,7 @@ export default function Caption({
 	...restProps
 }: CaptionType) {
 	const h1ClassNames = classNames(
-		"w-full h-24 py-2 px-8 flex justify-between items-center dark:text-white font-bold text-5xl",
+		"w-full h-24 py-2 flex justify-between items-center dark:text-white font-bold text-5xl",
 		className,
 	)
 	return (

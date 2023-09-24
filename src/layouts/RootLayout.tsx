@@ -38,7 +38,7 @@ export default function RootLayout() {
 				companyName: "netflix",
 				category: "remote",
 				salary: 2000,
-				date: new Date(),
+				date: `${new Date()}`,
 				description:
 					"We are looking for a dedicated senior web developer",
 				experience: "senior",
@@ -63,7 +63,7 @@ export default function RootLayout() {
 				companyName: "netflix",
 				category: "remote",
 				salary: 125000,
-				date: new Date(),
+				date: `${new Date()}`,
 				description:
 					"We are looking for a backend developer to work part time",
 				experience: "mid-level",
@@ -80,7 +80,7 @@ export default function RootLayout() {
 				companyName: "netflix",
 				category: "egypt",
 				salary: 75000,
-				date: new Date(),
+				date: `${new Date()}`,
 				description:
 					"We are looking for an intern to work part time",
 				experience: "junior",

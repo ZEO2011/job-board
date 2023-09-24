@@ -10,7 +10,7 @@ export type jobListings = {
 	fullDescription: string
 	hidden: boolean
 	favorite: boolean
-	date?: Date
+	date: string
 	website: string
 	user: boolean
 }
