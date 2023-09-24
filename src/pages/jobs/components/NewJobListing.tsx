@@ -35,9 +35,9 @@ export default function NewJobListing() {
 	>("selectedExperience", "any")
 	const [salary, setSalary] = useSessionStorage("salary", "")
 	const [firstSubmit, setFirstSubmit] = useState(true)
-	const titleErrors = !firstSubmit ? checkLength(title, "title", 5) : []
+	const titleErrors = !firstSubmit ? checkLength(title, "title", 1) : []
 	const companyNameErrors = !firstSubmit
-		? checkLength(companyName, "company name", 3)
+		? checkLength(companyName, "company name", 1)
 		: []
 	const locationErrors = !firstSubmit
 		? checkLength(location, "location", 1)

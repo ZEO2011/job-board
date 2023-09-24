@@ -46,11 +46,17 @@ export function checkLength(
 	if (lowerThan)
 		if (text.length > lowerThan)
 			errors.push(`the ${title} must be lower than ${lowerThan} chars`)
-	if (greaterThan)
-		if (text.length < greaterThan)
-			errors.push(
-				`the ${title} must be greater than ${greaterThan} chars`,
-			)
+	if (greaterThan) {
+		if (greaterThan <= 1)
+			if (text.length < greaterThan)
+				errors.push(`the ${title} shouldn't be empty`)
+			else {
+				if (text.length < greaterThan)
+					errors.push(
+						`the ${title} must be greater than ${greaterThan} chars`,
+					)
+			}
+	}
 	return errors
 }
 
