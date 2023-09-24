@@ -49,10 +49,8 @@ export function FilterInput<T extends ElementType = "button">({
 		className,
 	)
 	const inputClassNames = classNames(
-		`border-2 rounded-md h-12 px-3  dark:bg-slate-700 dark:text-white ${
-			containsErrors
-				? "border-red-600 dark:border-red-600"
-				: "dark:border-0"
+		`border-2 rounded-md h-12 px-3 dark:border-slate-600 dark:bg-slate-700 dark:text-white ${
+			containsErrors && "border-red-600 dark:border-red-600"
 		}`,
 		inputClassName,
 	)

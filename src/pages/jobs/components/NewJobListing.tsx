@@ -40,7 +40,7 @@ export default function NewJobListing() {
 		? checkLength(companyName, "company name", 3)
 		: []
 	const locationErrors = !firstSubmit
-		? checkLength(location, "location", 5)
+		? checkLength(location, "location", 1)
 		: []
 	const applicationURLErrors = !firstSubmit ? checkURL(website) : []
 	const salaryErrors = !firstSubmit ? checkNumber(salary, "salary", 5) : []
