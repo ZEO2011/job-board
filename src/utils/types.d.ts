@@ -24,3 +24,10 @@ export type experienceType = {
 	id: number
 	name: "any" | "junior" | "mid-level" | "senior"
 }
+
+export type extendDaysType = {
+	id: number
+	days: number
+	salary: number
+	name: string
+}

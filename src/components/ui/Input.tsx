@@ -1,3 +1,5 @@
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import classNames from "classnames"
 import React, {
 	ComponentPropsWithoutRef,
@@ -8,6 +10,7 @@ import React, {
 	RefObject,
 	SetStateAction,
 } from "react"
+import { useToggle } from "usehooks-ts"
 
 type FilterInputType<T extends ElementType> = {
 	caption: string
@@ -26,9 +29,9 @@ type FilterInputType<T extends ElementType> = {
 	errors?: string[]
 } & ComponentPropsWithoutRef<T>
 
-export function FilterInput<T extends ElementType = "button">({
+export function Input<T extends ElementType = "button">({
 	caption,
-	inputType,
+	inputType = "text",
 	custom,
 	children,
 	className,
@@ -43,14 +46,19 @@ export function FilterInput<T extends ElementType = "button">({
 	errors = [],
 	...restProps
 }: FilterInputType<T>) {
+	const isPassword = inputType === "password"
+	const [showPassword, toggleShowPassword] = useToggle(false)
+	const type = isPassword ? (showPassword ? "text" : "password") : inputType
 	const containsErrors = errors.length > 0
 	const parentClassName = classNames(
-		"flex flex-col justify-start w-[28rem] h-fit gap-1.5",
+		"flex flex-col relative justify-start w-[28rem] h-fit gap-1.5",
 		className,
 	)
 	const inputClassNames = classNames(
-		`border-2 rounded-md h-12 px-3 dark:border-slate-600 dark:bg-slate-700 dark:text-white ${
-			containsErrors && "border-red-600 dark:border-red-600"
+		`border-2 rounded-md h-12 px-3 dark:bg-slate-700 dark:text-white ${
+			containsErrors
+				? "border-red-600 dark:border-red-600"
+				: "dark:border-slate-600"
 		}`,
 		inputClassName,
 	)
@@ -75,7 +83,7 @@ export function FilterInput<T extends ElementType = "button">({
 						{...restProps}
 						maxLength={max}
 						ref={inputRef}
-						type={inputType}
+						type={type}
 						className={inputClassNames}
 						value={inputValue}
 						onChange={(
@@ -90,6 +98,16 @@ export function FilterInput<T extends ElementType = "button">({
 					<p className="text-red-600 user">
 						{errors?.join(", ")}
 					</p>
+					{isPassword && (
+						<div
+							className="absolute top-1/2 right-5 translate-y-[0.30rem] cursor-pointer dark:text-white"
+							onClick={toggleShowPassword}
+						>
+							<FontAwesomeIcon
+								icon={showPassword ? faEyeSlash : faEye}
+							/>
+						</div>
+					)}
 				</>
 			)}
 			{children}

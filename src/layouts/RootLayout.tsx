@@ -95,14 +95,14 @@ export default function RootLayout() {
 	)
 	return (
 		<>
-			<LoginContext.Provider value={{ loginData, setLoginData }}>
-				<Header />
-				<JobListingsContext.Provider
-					value={{ jobListings, setJobListings }}
-				>
+			<JobListingsContext.Provider
+				value={{ jobListings, setJobListings }}
+			>
+				<LoginContext.Provider value={{ loginData, setLoginData }}>
+					<Header />
 					<Outlet />
-				</JobListingsContext.Provider>
-			</LoginContext.Provider>
+				</LoginContext.Provider>
+			</JobListingsContext.Provider>
 		</>
 	)
 }

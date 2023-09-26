@@ -1,22 +1,31 @@
-import { useEffect, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { Listbox } from "@headlessui/react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheck } from "@fortawesome/free-solid-svg-icons"
 import classNames from "classnames"
-import { JobTypeType, experienceType } from "../../utils/types"
 
 export default function SelectList<
-	T extends { id: number; name: (JobTypeType | experienceType)["name"] },
+	T extends {
+		id: number
+		name: string
+	},
 >({
 	items,
 	className,
 	getValue,
+	children,
+	onChange,
 }: {
 	items: T[]
-	className?: string
+	className?: classNames.Argument
+	children?: ReactNode
 	getValue?: (name: T["name"]) => void
+	onChange?: () => void
 }) {
 	const [selectedItem, setSelectedItem] = useState(items[0])
+	useEffect(() => {
+		if (onChange) onChange()
+	}, [onChange, selectedItem])
 	useEffect(() => {
 		if (getValue) getValue(selectedItem.name)
 	}, [getValue, selectedItem])
@@ -26,9 +35,13 @@ export default function SelectList<
 	)
 	return (
 		<Listbox value={selectedItem} onChange={setSelectedItem}>
-			<Listbox.Button className="border-2 rounded-md h-12 px-3 text-start dark:bg-slate-700 dark:border-0 dark:text-white">
-				{selectedItem.name}
-			</Listbox.Button>
+			{children ? (
+				<Listbox.Button>{children}</Listbox.Button>
+			) : (
+				<Listbox.Button className="border-2 rounded-md h-12 px-3 text-start dark:bg-slate-700 dark:border-0 dark:text-white">
+					{selectedItem.name}
+				</Listbox.Button>
+			)}
 			<Listbox.Options className={optionsClassName}>
 				{items.map((item) => (
 					<Listbox.Option

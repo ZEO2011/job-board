@@ -1,39 +1,45 @@
-import { Navigate, useNavigate } from "react-router-dom"
-import useLogin from "../../../contexts/useLoginData"
-import SelectList from "../../../components/ui/SelectList"
-import { Input } from "../../../components/ui/Input"
-import jobType from "../../../constants/jobType"
-import experienceLevel from "../../../constants/experienceLevel"
-import Caption from "../../../components/Caption"
-import Btn from "../../../components/ui/Btn"
-import { useSessionStorage, useToggle } from "usehooks-ts"
-import JobListing from "./JobListing"
-import { JobTypeType, experienceType } from "../../../utils/types"
-import useJobListings from "../../../contexts/useJobListings"
+import { LoaderFunction, useLoaderData, useNavigate } from "react-router-dom"
+import useJobListings from "../contexts/useJobListings"
+import JobListing from "./jobs/components/JobListing"
+import Btn from "../components/ui/Btn"
+import { Input } from "../components/ui/Input"
+import experienceLevel from "../constants/experienceLevel"
+import SelectList from "../components/ui/SelectList"
+import jobType from "../constants/jobType"
+import { JobTypeType, experienceType } from "../utils/types"
+import Caption from "../components/Caption"
+import { checkLength, checkNumber, checkURL } from "../validators"
 import { useState } from "react"
-import { checkLength, checkNumber, checkURL } from "../../../validators"
+import { useToggle } from "usehooks-ts"
 
-export default function NewJobListing() {
-	const login = useLogin()
+function EditJobListing() {
+	const loaderData = useLoaderData() as { JobListingId: string }
+	const { jobListings } = useJobListings()
+	const currentJobListing = jobListings.filter((el) => {
+		return el.id == loaderData.JobListingId
+	})[0]
 	const navigate = useNavigate()
 	const { setJobListings } = useJobListings()
 	const [previewValue, toggle] = useToggle(false)
-	const [title, setTitle] = useSessionStorage("title", "")
-	const [companyName, setCompanyName] = useSessionStorage("companyName", "")
-	const [location, setLocation] = useSessionStorage("location", "")
-	const [website, setWebsite] = useSessionStorage("website", "")
-	const [description, setDescription] = useSessionStorage("description", "")
-	const [fullDescription, setFullDescription] = useSessionStorage(
-		"fullDescription",
-		"",
+	const [title, setTitle] = useState(currentJobListing.title)
+	const [companyName, setCompanyName] = useState(
+		currentJobListing.companyName,
 	)
-	const [selectedJobType, setSelectedJobType] = useSessionStorage<
+	const [location, setLocation] = useState(currentJobListing.category)
+	const [website, setWebsite] = useState(currentJobListing.website)
+	const [description, setDescription] = useState(
+		currentJobListing.description,
+	)
+	const [fullDescription, setFullDescription] = useState(
+		currentJobListing.fullDescription,
+	)
+	const [selectedJobType, setSelectedJobType] = useState<
 		JobTypeType["name"]
-	>("selectedJobType", "any")
-	const [selectedExperience, setSelectedExperience] = useSessionStorage<
+	>(currentJobListing.time)
+	const [selectedExperience, setSelectedExperience] = useState<
 		experienceType["name"]
-	>("selectedExperience", "any")
-	const [salary, setSalary] = useSessionStorage("salary", "")
+	>(currentJobListing.experience)
+	const [salary, setSalary] = useState(`${currentJobListing.salary}`)
 	const [firstSubmit, setFirstSubmit] = useState(true)
 	const titleErrors = !firstSubmit ? checkLength(title, "title", 1) : []
 	const companyNameErrors = !firstSubmit
@@ -43,7 +49,9 @@ export default function NewJobListing() {
 		? checkLength(location, "location", 1)
 		: []
 	const applicationURLErrors = !firstSubmit ? checkURL(website) : []
-	const salaryErrors = !firstSubmit ? checkNumber(salary, "salary", 5) : []
+	const salaryErrors = !firstSubmit
+		? checkNumber(`${salary}`, "salary", 5)
+		: []
 	const descriptionErrors = !firstSubmit
 		? checkLength(description, "description", 30)
 		: []
@@ -69,26 +77,28 @@ export default function NewJobListing() {
 		setFirstSubmit(false)
 		if (!firstSubmit) {
 			setJobListings((c) => {
-				return [
-					...c,
-					{
-						title,
-						companyName,
-						category: location,
-						website,
-						time: selectedJobType,
-						experience: selectedExperience,
-						salary: +salary,
-						description,
-						fullDescription,
-						user: true,
-						id,
-						hidden: false,
-						favorite: false,
-						date: `${new Date()}`,
-					},
-				]
-			})
+				return c.map((el) => {
+					if (el.id == currentJobListing.id) {
+						return {
+							title,
+							companyName,
+							category: location,
+							website,
+							time: selectedJobType,
+							experience: selectedExperience,
+							salary: +salary,
+							description,
+							fullDescription,
+							id: el.id,
+							hidden: el.hidden,
+							favorite: el.favorite,
+							date: el.date,
+							user: el.user,
+						}
+					}
+					return el
+				})
+			})	
 			setTitle("")
 			setCompanyName("")
 			setLocation("")
@@ -98,13 +108,16 @@ export default function NewJobListing() {
 			setSalary("0")
 			setDescription("")
 			setFullDescription("")
-			return navigate("/jobs")
+			return navigate("/jobs/my-listings/")
 		}
 	}
-	if (login?.loginData.email === "") return <Navigate to={"/login"} />
 	return (
 		<>
-			<Caption className="pl-0" caption="new listing" withoutBtn />
+			<Caption
+				className="pl-0"
+				caption="edit Job Listing"
+				withoutBtn
+			/>
 			<div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 justify-center items-center w-full mx-auto h-fit gap-4 gap- md:py-2 mt-8 px-2 pb-12 md:px-4">
 				<Input
 					errors={titleErrors}
@@ -205,7 +218,7 @@ export default function NewJobListing() {
 					style={errors > 0 ? "disabled" : "background"}
 					onClick={submit}
 				>
-					Save
+					Edit
 				</Btn>
 			</div>
 			{previewValue && (
@@ -231,3 +244,15 @@ export default function NewJobListing() {
 		</>
 	)
 }
+
+const loader: LoaderFunction = ({ params }) => {
+	return params
+}
+
+const EditJobListingRoute = {
+	loader,
+	path: "edit",
+	element: <EditJobListing />,
+}
+
+export default EditJobListingRoute

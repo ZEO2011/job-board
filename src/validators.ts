@@ -47,24 +47,25 @@ export function checkLength(
 		if (text.length > lowerThan)
 			errors.push(`the ${title} must be lower than ${lowerThan} chars`)
 	if (greaterThan) {
-		if (greaterThan <= 1)
-			if (text.length < greaterThan)
+		if (greaterThan <= 1) {
+			if (text.length == 0)
 				errors.push(`the ${title} shouldn't be empty`)
-			else {
-				if (text.length < greaterThan)
-					errors.push(
-						`the ${title} must be greater than ${greaterThan} chars`,
-					)
+		} else {
+			if (text.length < greaterThan) {
+				errors.push(
+					`the ${title} must be greater than ${greaterThan} chars`,
+				)
 			}
+		}
 	}
 	return errors
 }
 
 export function checkURL(url: string) {
 	const errors = []
-	const httpRegex = /(http:\/\/|https:\/\/)/gi
+	const httpRegex = /(http:\/\/|https:\/\/|www.)/gi
 	if (!httpRegex.test(url))
-		errors.push("the URL should contain https:// or http://")
+		errors.push("the URL should contain https:// or http:// or www.")
 	const URLNameRegex = /(?:https?:\/\/|www\.)\S+/gi
 	if (!URLNameRegex.test(url)) {
 		errors.push("the URL should contain a domain name")

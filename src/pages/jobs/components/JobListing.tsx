@@ -80,7 +80,7 @@ export default function JobListing({
 	const jobListingDate = format(Date.parse(date), "dd")
 	const daysGone = +jobListingDate - +format(new Date(), "dd")
 	const [formattedDate, setFormattedDate] = useState<string | number>(
-		daysGone,
+		`${daysGone} days left`,
 	)
 	useEffect(() => {
 		if (daysGone == 0) setFormattedDate("today")
@@ -170,14 +170,11 @@ export default function JobListing({
 					</div>
 				</div>
 				<p className="p-4 pl-0 text-lg">{description}</p>
-				{children ?? (
-					<Btn
-						className="absolute bottom-3 right-5"
-						onClick={toggleMessage}
-					>
-						view more
-					</Btn>
-				)}
+				<div className="absolute bottom-3 right-5 flex gap-2">
+					{children ?? (
+						<Btn onClick={toggleMessage}>view more</Btn>
+					)}
+				</div>
 			</div>
 		</>
 	)

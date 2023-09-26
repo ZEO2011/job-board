@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import useLogin from "../contexts/useLoginData"
 import { checkConfirmPassword, checkEmail, checkPassword } from "../validators"
 import Btn from "../components/ui/Btn"
+import { Input } from "../components/ui/Input"
 
 export default function Login() {
 	const navigate = useNavigate()
@@ -25,13 +26,14 @@ export default function Login() {
 		if (confirm != confirmPasswordStatus) setFirstSubmit(true)
 		setConfirmPasswordStatus(confirm)
 		if (!firstSubmit)
-			if (errors == 0) {
-				login?.setLoginData({
-					email: emailValue,
-					password: passwordValue,
-				})
-				return navigate("/jobs")
-			}
+			if (confirm === confirmPasswordStatus)
+				if (errors == 0) {
+					login?.setLoginData({
+						email: emailValue,
+						password: passwordValue,
+					})
+					return navigate("/jobs")
+				}
 	}
 	return (
 		<div className="w-full h-[calc(100%-5rem)] px-4 grid place-items-center">
@@ -44,104 +46,30 @@ export default function Login() {
 					demo version
 				</p>
 				<div className="w-full min-h-56 pb-5 pt-4 flex flex-col gap-4">
-					<div className="email">
-						<label
-							htmlFor="email"
-							className={`font-semibold ${
-								!firstSubmit && emailErrors.length !== 0
-									? "text-red-600"
-									: "dark:text-white"
-							}`}
-						>
-							email
-						</label>
-						<input
-							value={emailValue}
-							onChange={(e) =>
-								setEmailValue(e.currentTarget.value)
-							}
-							required
-							id="email"
-							type="email"
-							className={`border-2 mb-2 bg-main ${
-								emailErrors
-									? emailErrors.length > 0
-										? "border-error dark:border-error"
-										: "dark:border-slate-700"
-									: "dark:border-slate-700"
-							} dark:border-2 dark:text-white w-full h-10 rounded-md mt-2 pl-2 dark:bg-slate-700`}
-						/>
-						<p className="text-red-600">
-							{emailErrors.join(", ")}
-						</p>
-					</div>
-					<div className="password">
-						<label
-							htmlFor="password"
-							className={`font-semibold ${
-								!firstSubmit &&
-								passwordErrors.length !== 0
-									? "text-red-600"
-									: "dark:text-white"
-							}`}
-						>
-							password
-						</label>
-						<input
-							value={passwordValue}
-							onChange={(e) =>
-								setPasswordValue(e.currentTarget.value)
-							}
-							required
-							id="password"
-							type="password"
-							className={`border-2 mb-2 bg-main ${
-								passwordErrors
-									? passwordErrors.length > 0
-										? "border-error dark:border-error"
-										: "dark:border-slate-700"
-									: "dark:border-slate-700"
-							} dark:border-2 dark:text-white w-full h-10 rounded-md mt-2 pl-2 dark:bg-slate-700`}
-						/>
-						<p className="text-red-600">
-							{passwordErrors.join(", ")}
-						</p>
-					</div>
+					<Input
+						inputValue={emailValue}
+						setInputValue={setEmailValue}
+						caption="email"
+						className="w-full"
+						errors={emailErrors}
+					/>
+					<Input
+						inputType="password"
+						inputValue={passwordValue}
+						setInputValue={setPasswordValue}
+						caption="password"
+						className="w-full"
+						errors={passwordErrors}
+					/>
 					{confirmPasswordStatus && (
-						<div className="confirm-password">
-							<label
-								htmlFor="confirm-password"
-								className={`font-semibold ${
-									!firstSubmit &&
-									confirmErrors.length !== 0
-										? "text-red-600"
-										: "dark:text-white"
-								}`}
-							>
-								confirm password
-							</label>
-							<input
-								value={confirmPasswordValue}
-								onChange={(e) =>
-									setConfirmPasswordValue(
-										e.currentTarget.value,
-									)
-								}
-								required
-								id="confirm-password"
-								type="text"
-								className={`border-2 mb-2 bg-main ${
-									confirmErrors
-										? confirmErrors.length > 0
-											? "border-error dark:border-error"
-											: "dark:border-slate-700"
-										: "dark:border-slate-700"
-								} dark:border-2 dark:text-white w-full h-10 rounded-md mt-2 pl-2 dark:bg-slate-700`}
-							/>
-							<p className="text-red-600">
-								{confirmErrors.join(", ")}
-							</p>
-						</div>
+						<Input
+							inputType="text"
+							inputValue={confirmPasswordValue}
+							setInputValue={setConfirmPasswordValue}
+							caption="confirm password"
+							className="w-full"
+							errors={confirmErrors}
+						/>
 					)}
 				</div>
 				<div className="buttons flex justify-end gap-2">

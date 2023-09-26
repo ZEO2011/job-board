@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, ReactNode, SetStateAction } from "react"
 import JobListing from "./JobListing"
 import { jobListings } from "../../../utils/types"
 
@@ -8,6 +8,7 @@ type JobListingsType = {
 	hidden?: boolean
 	favorites?: boolean
 	setDate?: boolean
+	children?: ReactNode
 }
 export default function JobListings({
 	jobListings,
@@ -15,6 +16,7 @@ export default function JobListings({
 	hidden,
 	favorites,
 	setDate,
+	children,
 }: JobListingsType) {
 	const filtered = jobListings
 		.filter((el) => {
@@ -38,12 +40,16 @@ export default function JobListings({
 		.filter((el) => !el.hidden)
 		.map((job: jobListings) => {
 			return (
-				<JobListing
-					setDate={setDate}
-					setJobListings={setJobListings}
-					key={job.id}
-					{...job}
-				/>
+				<>
+					<JobListing
+						setDate={setDate}
+						setJobListings={setJobListings}
+						key={job.id}
+						{...job}
+					>
+						{children}
+					</JobListing>
+				</>
 			)
 		})
 	return (

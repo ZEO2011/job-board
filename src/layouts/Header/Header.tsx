@@ -6,7 +6,7 @@ import { Menu } from "@headlessui/react"
 import { Link } from "react-router-dom"
 import UserBtn from "./components/UserBtn"
 
-const DEFAULT_THEME = "(prefers-color-scheme: dark)"
+const DEFAULT_THEME = window.matchMedia("(prefers-color-scheme: dark)").matches
 export default function Header() {
 	const {
 		isDarkMode: dark,

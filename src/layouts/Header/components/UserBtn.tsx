@@ -3,9 +3,19 @@ import useLogin from "../../../contexts/useLoginData"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
+import useJobListings from "../../../contexts/useJobListings"
 
 export default function UserBtn() {
 	const login = useLogin()
+	const { setJobListings } = useJobListings()
+	function logoutHandler() {
+		login?.setLoginData({ email: "", password: "" })
+		setJobListings((c) => {
+			return c.filter((el) => {
+				return !el.user
+			})
+		})
+	}
 	return (
 		<>
 			<Menu>
@@ -65,14 +75,8 @@ export default function UserBtn() {
 												<Menu.Item>
 													<button
 														className="w-full h-10 main-btn text-start pl-2 pr-14 rounded-md"
-														onClick={() =>
-															login?.setLoginData(
-																{
-																	email: "",
-																	password:
-																		"",
-																},
-															)
+														onClick={
+															logoutHandler
 														}
 													>
 														logout

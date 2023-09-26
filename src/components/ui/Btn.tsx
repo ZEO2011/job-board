@@ -17,18 +17,25 @@ export default function Btn<T extends ElementType = "button">({
 	...restProps
 }: BtnType<T>) {
 	const Component = As || "button"
+	const getBaseClass = (style: string) => {
+		switch (style) {
+			case "background":
+				return "bg-black dark:bg-white dark:text-black text-white"
+			case "none":
+				return "dark:text-white text-black hover:bg-gray-200 dark:hover:bg-slate-700"
+			case "disabled":
+				return "dark:bg-gray-400 bg-black bg-opacity-20 dark:bg-opacity-100 cursor-default hover:scale-100"
+			default:
+				return "!text-black dark:!text-white border-2 dark:border-slate-700 text-white dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
+		}
+	}
+	const baseClass = getBaseClass(style)
 	const buttonClassNames = classNames(
-		`text-lg py-2 px-4 rounded-lg transition hover:scale-[1.04] ${
-			style === "background"
-				? "bg-black dark:bg-white dark:text-black text-white"
-				: style === "none"
-				? "dark:text-white text-black"
-				: style === "disabled"
-				? "dark:bg-gray-400 bg-black bg-opacity-20 dark:bg-opacity-100 cursor-default hover:scale-100"
-				: "!text-black dark:!text-white border-2 dark:border-slate-700 text-white dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
-		}`,
+		"text-lg py-2 px-4 rounded-lg transition hover:scale-[1.04]",
+		baseClass,
 		restProps.className,
 	)
+
 	if (to) {
 		return (
 			<Link

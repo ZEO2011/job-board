@@ -6,9 +6,9 @@
 
 @layer base {
 	* {
-		@apply box-border capitalize;
+		@apply box-border capitalize select-none;
 		&:focus {
-			outline: none;
+			@apply outline-8 outline-gray-400 dark:outline-0;
 		}
 	}
 	html {
