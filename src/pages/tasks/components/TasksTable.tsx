@@ -77,15 +77,21 @@ export default function TasksTable() {
 					</tr>
 				</thead>
 				<tbody className="w-full min-h-[20.7rem] overflow-x-scroll sm:overflow-x-auto">
-					{filteredTasks.map((task) => {
-						return (
-							<Task
-								key={crypto.randomUUID()}
-								taskId={task.id}
-								{...task}
-							/>
-						)
-					})}
+					{filteredTasks.length !== 0 ? (
+						filteredTasks.map((task) => {
+							return (
+								<Task
+									key={crypto.randomUUID()}
+									taskId={task.id}
+									{...task}
+								/>
+							)
+						})
+					) : (
+						<h1 className="w-full mt-12 dark:text-white !h-full grid place-items-center">
+							you don't have tasks, have a great day!
+						</h1>
+					)}
 				</tbody>
 			</table>
 		</div>

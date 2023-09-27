@@ -102,7 +102,11 @@ export default function JobListing({
 				/>
 			)}
 			<div className={parentClassNames}>
-				<div className="header w-full h-fit flex justify-between items-center">
+				<div
+					className={`header w-full h-fit flex justify-between items-center ${
+						hidden && "opacity-50"
+					}`}
+				>
 					<h3 className="text-3xl font-bold">{title}</h3>
 					<div className="flex gap-1">
 						{!setDate && (
@@ -156,23 +160,42 @@ export default function JobListing({
 					</p>
 				</div>
 				<div className="flex gap-2 mb-2">
-					<div className="flex items-center gap-2 rounded-full bg-gray-200 dark:bg-slate-700 p-1.5 px-3 text-md">
+					<div
+						className={`flex items-center gap-2 rounded-full bg-gray-200 dark:bg-slate-700 p-1.5 px-3 text-md ${
+							hidden && "opacity-50"
+						}`}
+					>
 						<FontAwesomeIcon icon={faMoneyBill} />
 						<p>{formattedSalary}</p>
 					</div>
-					<div className="flex items-center gap-2 rounded-full bg-gray-200 dark:bg-slate-700 p-1.5 px-3 text-md">
+					<div
+						className={`flex items-center gap-2 rounded-full bg-gray-200 dark:bg-slate-700 p-1.5 px-3 text-md ${
+							hidden && "opacity-50"
+						}`}
+					>
 						<FontAwesomeIcon icon={faCalendar} />
 						<p>{time}</p>
 					</div>
-					<div className="flex items-center gap-2 rounded-full bg-gray-200 dark:bg-slate-700 p-1.5 px-3 text-md">
+					<div
+						className={`flex items-center gap-2 rounded-full bg-gray-200 dark:bg-slate-700 p-1.5 px-3 text-md ${
+							hidden && "opacity-50"
+						}`}
+					>
 						<FontAwesomeIcon icon={faGraduationCap} />
 						<p>{experience}</p>
 					</div>
 				</div>
-				<p className="p-4 pl-0 text-lg">{description}</p>
+				<p className={`p-4 pl-0 text-lg ${hidden && "opacity-50"}`}>
+					{description}
+				</p>
 				<div className="absolute bottom-3 right-5 flex gap-2">
 					{children ?? (
-						<Btn onClick={toggleMessage}>view more</Btn>
+						<Btn
+							onClick={toggleMessage}
+							className={`${hidden && "opacity-50"}`}
+						>
+							view more
+						</Btn>
 					)}
 				</div>
 			</div>

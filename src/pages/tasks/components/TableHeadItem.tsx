@@ -56,7 +56,7 @@ export default function TableHeadItem({
 						<MenuList.MenuItem className="py-0">
 							<div
 								onClick={() => setFilter("asc")}
-								className="w-full h-full flex justify-start py-3 items-center gap-1 pl-3"
+								className="w-full h-full flex justify-start py-0 items-center gap-1 pl-3"
 							>
 								<FontAwesomeIcon icon={faArrowUp} />
 								Asc
@@ -65,7 +65,7 @@ export default function TableHeadItem({
 						<MenuList.MenuItem className="py-0">
 							<div
 								onClick={() => setFilter("dsc")}
-								className="w-full h-full flex justify-start py-3 items-center gap-1 pl-3"
+								className="w-full h-full flex justify-start py-0 items-center gap-1 pl-3"
 							>
 								<FontAwesomeIcon icon={faArrowDown} />
 								Dsc
@@ -74,7 +74,7 @@ export default function TableHeadItem({
 						<MenuList.MenuItem className="py-0">
 							<div
 								onClick={() => setFilter("clear")}
-								className="w-full h-full flex justify-start py-3 items-center gap-1 pl-3"
+								className="w-full h-full flex justify-start py-0 items-center gap-1 pl-3"
 							>
 								<FontAwesomeIcon icon={faClose} />
 								clear sort
