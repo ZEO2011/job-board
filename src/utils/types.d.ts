@@ -2,7 +2,7 @@ export type jobListings = {
 	id: string
 	title: string
 	companyName: string
-	category: string
+	location: string
 	salary: number
 	time: JobTypeType["name"]
 	experience: experienceType["name"]
@@ -15,14 +15,22 @@ export type jobListings = {
 	user: boolean
 }
 
+export type task = {
+	id: string
+	title: string
+	status: "todo" | "in progress" | "done"
+	priority: "low" | "medium" | "high"
+	category: "work" | "personal"
+}
+
 export type JobTypeType = {
 	id: number
-	name: "any" | "full time" | "part time" | "internship"
+	name: jobListings["time"]
 }
 
 export type experienceType = {
 	id: number
-	name: "any" | "junior" | "mid-level" | "senior"
+	name: jobListings["experience"]
 }
 
 export type extendDaysType = {

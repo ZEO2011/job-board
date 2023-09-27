@@ -20,52 +20,50 @@ function Jobs() {
 	const [showHidden, setShowHidden] = useState(false)
 	const [showFavorites, setShowFavorites] = useState(false)
 	const { jobListings, setJobListings } = useJobListings()
-	const [filteredJobListings, setFilteredJobListings] =
-		useState<jobListings[]>(jobListings)
 	const [titleValue, setTitleValue] = useState("")
 	const [locationValue, setLocationValue] = useState("")
 	const [minSalaryValue, setMinSalaryValue] = useState("")
-	const [jobTypeValue, setJobTypeValue] = useState("")
-	function getJobTypeValue(name: string) {
-		setJobTypeValue(name)
-	}
-	const [experienceValue, setExperienceValue] = useState("")
-	function getExperienceValue(name: string) {
-		setExperienceValue(name)
-	}
-	function filterKeyUp() {
+	const [jobTypeValue, setJobTypeValue] = useState("any")
+	const [experienceValue, setExperienceValue] = useState("any")
+
+	useEffect(() => {
 		setFilteredJobListings(
 			jobListings
-				.filter((el) => {
-					return el.title
+				.filter((el) =>
+					el.title
 						.toLowerCase()
-						.includes(titleValue.toLowerCase())
+						.includes(titleValue.toLowerCase()),
+				)
+				.filter((el) =>
+					el.location
+						.toLowerCase()
+						.includes(locationValue.toLowerCase()),
+				)
+				.filter((el) => el.salary >= +minSalaryValue)
+				.filter((el) => {
+					if (jobTypeValue === "any") return true
+					return (
+						el.time.toLowerCase() ===
+						jobTypeValue.toLowerCase()
+					)
 				})
 				.filter((el) => {
-					return el.category
-						.toLowerCase()
-						.includes(locationValue.toLowerCase())
-				})
-				.filter((el) => {
-					return el.salary >= +minSalaryValue
-				})
-				.filter((el) => {
-					if (jobTypeValue === "any") return el
-					return el.time
-						.toLowerCase()
-						.includes(jobTypeValue.toLowerCase())
-				})
-				.filter((el) => {
-					if (experienceValue === "any") return el
-					return el.experience
-						.toLowerCase()
-						.includes(experienceValue.toLowerCase())
+					if (experienceValue === "any") return true
+					return (
+						el.experience.toLowerCase() ===
+						experienceValue.toLowerCase()
+					)
 				}),
 		)
-	}
-	useEffect(() => {
-		setFilteredJobListings(jobListings)
-	}, [jobListings])
+	}, [
+		titleValue,
+		locationValue,
+		minSalaryValue,
+		jobTypeValue,
+		experienceValue,
+		jobListings,
+	])
+
 	function resetHandler() {
 		setTitleValue("")
 		setLocationValue("")
@@ -74,6 +72,10 @@ function Jobs() {
 		setShowFavorites(false)
 		setFilteredJobListings(jobListings)
 	}
+
+	const [filteredJobListings, setFilteredJobListings] =
+		useState<jobListings[]>(jobListings)
+
 	return (
 		<>
 			<Caption
@@ -87,13 +89,11 @@ function Jobs() {
 					caption="title"
 					inputType="text"
 					inputValue={titleValue}
-					onKeyUp={filterKeyUp}
 					setInputValue={setTitleValue}
 				/>
 				<Input
 					inputValue={locationValue}
 					setInputValue={setLocationValue}
-					onKeyUp={filterKeyUp}
 					className="relative"
 					caption="location"
 					inputType="text"
@@ -102,25 +102,29 @@ function Jobs() {
 					caption="minimum salary"
 					inputType="number"
 					setInputValue={setMinSalaryValue}
-					onKeyUp={filterKeyUp}
+					onKeyUp={resetHandler}
 					inputValue={minSalaryValue}
 				/>
-				<Input className="relative" caption="job type" custom>
+				<Input
+					as={"div"}
+					className="relative"
+					caption="job type"
+					custom
+				>
 					<SelectList
-						onChange={filterKeyUp}
 						items={jobType}
-						getValue={getJobTypeValue}
+						getValue={(name) => setJobTypeValue(name)}
 					/>
 				</Input>
 				<Input
+					as={"div"}
 					className="relative"
 					caption="experience level"
 					inputType="text"
 					custom
 				>
 					<SelectList
-						getValue={getExperienceValue}
-						onChange={filterKeyUp}
+						getValue={(name) => setExperienceValue(name)}
 						items={experienceLevel}
 					/>
 				</Input>

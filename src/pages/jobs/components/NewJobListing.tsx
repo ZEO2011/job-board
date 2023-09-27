@@ -74,7 +74,7 @@ export default function NewJobListing() {
 					{
 						title,
 						companyName,
-						category: location,
+						location: location,
 						website,
 						time: selectedJobType,
 						experience: selectedExperience,
@@ -214,7 +214,7 @@ export default function NewJobListing() {
 						className="w-[min(40rem,100%)]"
 						title={title}
 						companyName={companyName}
-						category={location}
+						location={location}
 						website={website}
 						time={selectedJobType}
 						experience={selectedExperience}

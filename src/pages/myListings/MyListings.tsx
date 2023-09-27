@@ -1,4 +1,4 @@
-import { Navigate, useLoaderData, useNavigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import Caption from "../../components/Caption"
 import useLogin from "../../contexts/useLoginData"
 import useJobListings from "../../contexts/useJobListings"
@@ -12,8 +12,6 @@ import ExtendJobListing from "./components/ExtendJobListing"
 function MyListings() {
 	const login = useLogin()
 	const navigate = useNavigate()
-	const loaderData = useLoaderData()
-	console.log(loaderData)
 	const { jobListings, setJobListings } = useJobListings()
 	const [extendIsOpen, setExtendIsOpen] = useState(false)
 	const filteredJobListings = jobListings.filter((el) => el.user)
@@ -28,7 +26,6 @@ function MyListings() {
 		title: string,
 	) {
 		setCurrentJobListing({ days, salary, title })
-		console.log(currentJobListing)
 	}
 	function deleteHandler(id: string) {
 		setJobListings((current) => {

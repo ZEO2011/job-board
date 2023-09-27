@@ -19,7 +19,7 @@ export default function JobListing({
 	setJobListings,
 	title,
 	companyName,
-	category,
+	location,
 	salary,
 	time,
 	experience,
@@ -93,7 +93,7 @@ export default function JobListing({
 					viewStatus={setToggleMessage}
 					title={title}
 					companyName={companyName}
-					category={category}
+					location={location}
 					salary={salary}
 					time={time}
 					experience={experience}
@@ -152,7 +152,7 @@ export default function JobListing({
 						{companyName}
 					</p>
 					<p className="dark:text-gray-200 text-gray-500 mb-2">
-						{category}
+						{location}
 					</p>
 				</div>
 				<div className="flex gap-2 mb-2">

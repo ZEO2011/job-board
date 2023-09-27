@@ -15,7 +15,7 @@ export default function JobListingView({
 	viewStatus,
 	title,
 	companyName,
-	category,
+	location,
 	salary,
 	time,
 	experience,
@@ -55,7 +55,7 @@ export default function JobListingView({
 			</div>
 			<div className="w-full h-fit flex flex-col text-gray-500 gap-1">
 				<p className="text-gray-400">{companyName}</p>
-				<p className="text-gray-400">{category}</p>
+				<p className="text-gray-400">{location}</p>
 			</div>
 			<div className="flex gap-2 my-2">
 				<div className="flex gap-2 rounded-full bg-gray-200 dark:bg-slate-700 p-1.5 px-3 text-md">

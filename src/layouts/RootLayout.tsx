@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom"
 import Header from "./Header/Header"
 import { Dispatch, SetStateAction, createContext } from "react"
 import { useLocalStorage } from "usehooks-ts"
-import { jobListings } from "../utils/types"
+import { jobListings, task } from "../utils/types"
 
 type emailType = {
 	email: string
@@ -24,6 +24,13 @@ export const JobListingsContext = createContext<JobListingsContextType | null>(
 	null,
 )
 
+type taskContextType = {
+	tasks: task[]
+	setTasks: Dispatch<SetStateAction<task[]>>
+}
+
+export const TasksContext = createContext<taskContextType | null>(null)
+
 export default function RootLayout() {
 	const [loginData, setLoginData] = useLocalStorage("signingData", {
 		email: "",
@@ -36,7 +43,7 @@ export default function RootLayout() {
 				id: crypto.randomUUID(),
 				title: "senior web developer",
 				companyName: "netflix",
-				category: "remote",
+				location: "remote",
 				salary: 2000,
 				date: `${new Date()}`,
 				description:
@@ -61,7 +68,7 @@ export default function RootLayout() {
 				id: crypto.randomUUID(),
 				title: "Backend Developer",
 				companyName: "netflix",
-				category: "remote",
+				location: "remote",
 				salary: 125000,
 				date: `${new Date()}`,
 				description:
@@ -78,7 +85,7 @@ export default function RootLayout() {
 				id: crypto.randomUUID(),
 				title: "Frontend Developer",
 				companyName: "netflix",
-				category: "egypt",
+				location: "egypt",
 				salary: 75000,
 				date: `${new Date()}`,
 				description:
@@ -93,6 +100,29 @@ export default function RootLayout() {
 			},
 		],
 	)
+	const [tasks, setTasks] = useLocalStorage<task[]>("tasks", [
+		{
+			id: crypto.randomUUID(),
+			title: "meet the boss",
+			status: "done",
+			priority: "high",
+			category: "work",
+		},
+		{
+			id: crypto.randomUUID(),
+			title: "learn redux",
+			status: "in progress",
+			priority: "high",
+			category: "work",
+		},
+		{
+			id: crypto.randomUUID(),
+			title: "learn python",
+			status: "todo",
+			priority: "low",
+			category: "personal",
+		},
+	])
 	return (
 		<>
 			<JobListingsContext.Provider
@@ -100,7 +130,9 @@ export default function RootLayout() {
 			>
 				<LoginContext.Provider value={{ loginData, setLoginData }}>
 					<Header />
-					<Outlet />
+					<TasksContext.Provider value={{ tasks, setTasks }}>
+						<Outlet />
+					</TasksContext.Provider>
 				</LoginContext.Provider>
 			</JobListingsContext.Provider>
 		</>

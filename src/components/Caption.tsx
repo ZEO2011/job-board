@@ -1,9 +1,10 @@
 import classNames from "classnames"
+import { ReactNode } from "react"
 import { Link } from "react-router-dom"
 
 type CaptionType = Partial<typeof Link> & {
 	caption: string
-	buttonCaption?: string
+	buttonCaption?: string | ReactNode
 	withoutBtn?: boolean
 	to?: string
 	className?: string

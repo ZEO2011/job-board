@@ -25,7 +25,7 @@ function EditJobListing() {
 	const [companyName, setCompanyName] = useState(
 		currentJobListing.companyName,
 	)
-	const [location, setLocation] = useState(currentJobListing.category)
+	const [location, setLocation] = useState(currentJobListing.location)
 	const [website, setWebsite] = useState(currentJobListing.website)
 	const [description, setDescription] = useState(
 		currentJobListing.description,
@@ -82,7 +82,7 @@ function EditJobListing() {
 						return {
 							title,
 							companyName,
-							category: location,
+							location: location,
 							website,
 							time: selectedJobType,
 							experience: selectedExperience,
@@ -98,7 +98,7 @@ function EditJobListing() {
 					}
 					return el
 				})
-			})	
+			})
 			setTitle("")
 			setCompanyName("")
 			setLocation("")
@@ -227,7 +227,7 @@ function EditJobListing() {
 						className="w-[min(40rem,100%)]"
 						title={title}
 						companyName={companyName}
-						category={location}
+						location={location}
 						website={website}
 						time={selectedJobType}
 						experience={selectedExperience}
