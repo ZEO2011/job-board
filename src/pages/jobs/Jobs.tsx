@@ -31,26 +31,26 @@ function Jobs() {
 			jobListings
 				.filter((el) =>
 					el.title
-						.toLowerCase()
+						?.toLowerCase()
 						.includes(titleValue.toLowerCase()),
 				)
 				.filter((el) =>
 					el.location
-						.toLowerCase()
+						?.toLowerCase()
 						.includes(locationValue.toLowerCase()),
 				)
 				.filter((el) => el.salary >= +minSalaryValue)
 				.filter((el) => {
 					if (jobTypeValue === "any") return true
 					return (
-						el.time.toLowerCase() ===
+						el.time?.toLowerCase() ===
 						jobTypeValue.toLowerCase()
 					)
 				})
 				.filter((el) => {
 					if (experienceValue === "any") return true
 					return (
-						el.experience.toLowerCase() ===
+						el.experience?.toLowerCase() ===
 						experienceValue.toLowerCase()
 					)
 				}),
